@@ -42,6 +42,8 @@ Initially, data was partitioned by `userId` ranges, and query optimization was d
 @Query("SELECT b FROM Balance b WHERE b.userId >= :startUserId AND b.userId <= :endUserId")
     fun findByUserIdRange(@Param("startUserId") startUserId: Int, @Param("endUserId") endUserId: Int): List<Balance>
   ```
+
+* **Connection Pooling:** Configured HikariCP with `spring.datasource.hikari.maximum-pool-size=50` to efficiently manage database connections.
 * **SQL Request Statistics:** Enabled to check reports on queries using `spring.jpa.properties.hibernate.generate_statistics=true`.
 * **Logging Interceptor:** Implemented a `BeanPostProcessor` that logs executed query information using SLF4J. Although this exposes parameter values in logs, which is not recommended for a production application, it can be annotated with `@Profile("local")`. But as it's a test task, only the default profile was used.
 
