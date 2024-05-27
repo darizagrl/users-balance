@@ -34,9 +34,9 @@ The main challenge was handling up to a million records efficiently. To address 
         @Param("end") end: LocalDateTime
     ): List<Balance>
   ```
-* **Data Partitioning:** Implemented partitions by `created_at date` for the `Balances` table.
+* **Data Partitioning:** Implemented partitions by `created_at` date for the `Balances` table.
 
-Initially, data was partitioned by user ID ranges, and query optimization was done based on these ranges. However, with the switch to UUIDs for user IDs, this approach was no longer applicable as the sorting of UUID strings does not provide additional optimization benefits.
+Initially, data was partitioned by `userId` ranges, and query optimization was done based on these ranges. However, with the switch to `UUID`'s for `userId`'s, this approach was no longer applicable as the sorting of `UUID` strings does not provide additional optimization benefits.
 
   ```kotlin
 @Query("SELECT b FROM Balance b WHERE b.userId >= :startUserId AND b.userId <= :endUserId")
@@ -44,3 +44,8 @@ Initially, data was partitioned by user ID ranges, and query optimization was do
   ```
 * **SQL Request Statistics:** Enabled to check reports on queries using `spring.jpa.properties.hibernate.generate_statistics=true`.
 * **Logging Interceptor:** Implemented a `BeanPostProcessor` that logs executed query information using SLF4J. Although this exposes parameter values in logs, which is not recommended for a production application, it can be annotated with `@Profile("local")`. But as it's a test task, only the default profile was used.
+
+## Testing
+The application is covered with basic unit tests.  
+Performance testing can be conducted with JMeter, but it requires additional effort and is not within the scope of this task.  
+However, it could be considered a future improvement.
